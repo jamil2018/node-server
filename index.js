@@ -5,6 +5,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import connectDB from "./src/config/dbConfig.js";
+import { errorHandler, notFound } from "./src/middlewares/errorMiddlewares.js";
+import userRoute from "./src/routes/userRoute";
 
 dotenv.config();
 // connectDB();
@@ -18,6 +20,10 @@ app.use(helmet());
 process.env.NODE_ENV === "DEVELOPMENT" && app.use(morgan("dev"));
 
 app.use("/", (req, res) => res.send("hello world"));
+app.use("/api/v1/users", userRoute);
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(PORT, () =>
   console.log(
